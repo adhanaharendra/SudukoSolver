@@ -8,9 +8,23 @@
 </head>
 <body>
   <h1>Sudoku Solver</h1>
-  <div id="sudoku-board"></div>
-  <button onclick="solveSudoku()">Solve Sudoku</button>
+  <span id="timer">Time: 00:00</span>
 
+  <div id="sudoku-board"></div>
+
+  <div class="controls">
+    <label for="difficulty">Difficulty:</label>
+    <select id="difficulty">
+      <option value="32">Easy</option>
+      <option value="27">Medium</option>
+      <option value="21" selected>Hard</option>
+    </select>
+
+    <button onclick="generatePuzzle()">Generate Puzzle</button>
+    <button onclick="clearBoard()">Clear</button>
+  </div>
+    
+<div class="controls"><button onclick="solveSudoku()">Solve Sudoku</button></div>
   <div id="address-bar">Designed by Harendra</div>
 
   <script src="script.js"></script>
