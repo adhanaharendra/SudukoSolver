@@ -1,69 +1,122 @@
+/* ===== style.css ===== */
 body {
-    font-family: 'Arial', sans-serif;
-    text-align: center;
-    background-color: #f0f8ff;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-  }
+  font-family: 'Arial', sans-serif;
+  text-align: center;
+  background-color: #f0f8ff;
+  padding: 20px;
+  /* padding-bottom: 0px; */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+h1 {
+  font-size: 2.5em;
+  color: #333;
+}
+
+#timer {
+  font-size: 1.3em;
+  font-weight: bold;
+  color: #007bff;
+  margin: 10px 0;
+}
+
+#sudoku-board {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  gap: 2px;
+  margin: 20px auto;
+  width: 100%;
+  max-width: 540px;
+  aspect-ratio: 1 / 1; /* Makes board always square */
+  background-color: #333;
+}
+
+
+input {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  font-size: calc(1.2vw + 10px);
+  background-color: #f9f9f9;
+  border: none;
+  outline: none;
+  box-shadow: 0 0 5px #aaa;
+}
+
+
+input:focus {
+  background-color: #f1f1c0;
+  box-shadow: 0 0 10px #007bff;
+}
+
+input[readonly] {
+  color: blue;
+  font-weight: bold;
+  background-color: #eaf4ff;
+}
+
+.top-border {
+  border-top: 3px solid black;
+}
+.bottom-border {
+  border-bottom: 3px solid black;
+}
+.left-border {
+  border-left: 3px solid black;
+}
+.right-border {
+  border-right: 3px solid black;
+}
+
+.controls {
+  margin-top: 20px;
+  margin-bottom: 40px; /* 👈 Add this line */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+
+
+select {
+  font-size: 1em;
+  padding: 6px 10px;
+  border-radius: 5px;
+  border: 1px solid #aaa;
+}
+
+.controls button {
+  font-size: 1.2em;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0 5px 10px rgba(0, 123, 255, 0.2);
+}
+
+.controls button:hover {
+  background-color: #0056b3;
+}
+
+#address-bar {
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 10px;
+  font-size: 1.2em;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+}
+button {
+  font-size: 1em;
   
-  h1 {
-    font-size: 2.5em;
-    color: #333;
-  }
-  
-  #sudoku-board {
-    display: grid;
-    grid-template-columns: repeat(9, 60px);
-    grid-template-rows: repeat(9, 60px);
-    gap: 2px;
-    margin: 20px auto;
-    max-width: 600px;
-    background-color: #333;
-  }
-  
-  input {
-    width: 100%;
-    height: 100%;
-    text-align: center;
-    font-size: 1.8em;
-    background-color: #f9f9f9;
-    border: none;
-    outline: none;
-    box-shadow: 0 0 5px #aaa;
-  }
-  
-  input:focus {
-    background-color: #f1f1c0;
-    box-shadow: 0 0 10px #007bff;
-  }
-  
-  button {
-    font-size: 1.2em;
-    padding: 10px 20px;
-    margin-top: 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    box-shadow: 0 5px 10px rgba(0, 123, 255, 0.2);
-  }
-  
-  button:hover {
-    background-color: #0056b3;
-  }
-  
-  #address-bar {
-    background-color: #333;
-    color: white;
-    text-align: center;
-    padding: 10px;
-    font-size: 1.2em;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
-  }
-  
+  padding: 10px 16px;
+}
