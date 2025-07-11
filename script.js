@@ -1,4 +1,8 @@
+/* ===== script.js =====  */
 window.onload = createBoard;
+
+let timerInterval = null;
+let startTime = null;
 
 function createBoard() {
   const board = document.getElementById("sudoku-board");
@@ -9,15 +13,24 @@ function createBoard() {
     cell.setAttribute("min", "1");
     cell.setAttribute("max", "9");
     cell.dataset.index = i;
+
+    const row = Math.floor(i / 9);
+    const col = i % 9;
+    if (row % 3 === 0) cell.classList.add("top-border");
+    if (row === 8) cell.classList.add("bottom-border");
+    if (col % 3 === 0) cell.classList.add("left-border");
+    if (col === 8) cell.classList.add("right-border");
+
     cell.addEventListener("keydown", handleKeyNavigation);
     cell.addEventListener("input", validateInput);
     board.appendChild(cell);
   }
+  resetTimer();
 }
 
 function handleKeyNavigation(event) {
   if (event.key === " ") {
-    event.preventDefault(); // Prevent spacebar scrolling
+    event.preventDefault();
     const currentIndex = parseInt(this.dataset.index);
     moveToNextCell(currentIndex);
   }
@@ -33,10 +46,10 @@ function validateInput(event) {
   const value = event.target.value;
   const num = parseInt(value);
 
-  if (value === "") return; // Allow empty input
+  if (value === "") return;
 
   if (isNaN(num) || num < 1 || num > 9) {
-    event.target.value = ""; // Clear invalid input
+    event.target.value = "";
     alert("Please enter a number between 1 and 9 only.");
   }
 }
@@ -62,14 +75,19 @@ function setBoardValues(board) {
 
 function clearBoard() {
   const cells = document.querySelectorAll("#sudoku-board input");
-  cells.forEach(cell => cell.value = "");
+  cells.forEach(cell => {
+    cell.value = "";
+    cell.readOnly = false;
+    cell.style.color = "";
+  });
+  resetTimer();
 }
 
 function isValid(board, row, col, num) {
   for (let i = 0; i < 9; i++) {
     if (
-      board[row][i] === num || 
-      board[i][col] === num || 
+      board[row][i] === num ||
+      board[i][col] === num ||
       board[3 * Math.floor(row / 3) + Math.floor(i / 3)]
            [3 * Math.floor(col / 3) + (i % 3)] === num
     ) {
@@ -84,11 +102,11 @@ function isInitialBoardValid(board) {
     for (let col = 0; col < 9; col++) {
       const num = board[row][col];
       if (num !== 0) {
-        board[row][col] = 0; // Temporarily remove to check validity
+        board[row][col] = 0;
         if (!isValid(board, row, col, num)) {
           return false;
         }
-        board[row][col] = num; // Restore value
+        board[row][col] = num;
       }
     }
   }
@@ -124,8 +142,65 @@ function solveSudoku() {
 
   if (solve(board)) {
     setBoardValues(board);
+    resetTimer();
     alert("Sudoku solved!");
   } else {
     alert("No solution found.");
   }
+}
+
+function generatePuzzle() {
+  clearBoard();
+
+  const clueCount = parseInt(document.getElementById("difficulty").value);
+  const cellsToRemove = 81 - clueCount;
+
+  let board = Array.from({ length: 9 }, () => Array(9).fill(0));
+  solve(board);
+
+  let removed = 0;
+  while (removed < cellsToRemove) {
+    const row = Math.floor(Math.random() * 9);
+    const col = Math.floor(Math.random() * 9);
+    if (board[row][col] !== 0) {
+      board[row][col] = 0;
+      removed++;
+    }
+  }
+
+  setBoardValues(board);
+
+  const cells = document.querySelectorAll("#sudoku-board input");
+  cells.forEach((cell, index) => {
+    const row = Math.floor(index / 9);
+    const col = index % 9;
+    if (board[row][col] !== 0) {
+      cell.readOnly = true;
+      cell.style.color = "blue";
+    } else {
+      cell.readOnly = false;
+      cell.style.color = "";
+    }
+  });
+
+  resetTimer();
+  startTimer();
+}
+
+function startTimer() {
+  startTime = new Date();
+  timerInterval = setInterval(updateTimer, 1000);
+}
+
+function updateTimer() {
+  const now = new Date();
+  const elapsed = Math.floor((now - startTime) / 1000);
+  const minutes = String(Math.floor(elapsed / 60)).padStart(2, '0');
+  const seconds = String(elapsed % 60).padStart(2, '0');
+  document.getElementById('timer').textContent = `Time: ${minutes}:${seconds}`;
+}
+
+function resetTimer() {
+  clearInterval(timerInterval);
+  document.getElementById('timer').textContent = 'Time: 00:00';
 }
